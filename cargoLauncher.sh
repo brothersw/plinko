@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Variables
-SERVER="198.18.3.81"  # Replace with your server's address
-USER="ubuntu"  # Replace with your username on the server
-SCRIPT_PATH="mast.sh"  # Local script path
-REMOTE_PATH="/home/$USER/mast.sh"  # Remote script path
-REMOTE_PW="odfALaZXWKxmnoJdT17wSzBV3_Q1NYOG"
+SERVER="172.16.16.40"  # Replace with your server's address
+USER="plinktern"  # Replace with your username on the server
+SCRIPT_PATH="cargo.sh"  # Local script path
+REMOTE_PATH="/home/$USER/cargo.sh"  # Remote script path
+REMOTE_PW="HPCCrulez!"
 
 # Function to try transferring the script
 transfer_script() {
