@@ -97,25 +97,10 @@ systemctl restart sshd
 # rm -rf /home/*/.ssh/* # this might mess up hkeating
 
 echo "securing mysql"
-# TODO: perform password change & stuff
-# ALTER USER '$PROTECTED_USER'@'localhost' ......
-# TODO: restrict root login
 mysqldump -h localhost -u hkeating -p my_wiki > $LOCATION/sqldump
 mysqldump -h localhost -u root -p my_wiki > $LOCATION/sqldump2
 mysql_secure_installation --use-default
-# TODO: enable mysql auditing
-# SET global general_log_file='/var/log/mysql/mysql_general.log';
-# SET global general_log = on;
-# SET global log_output = 'file';
-# chown -R mysql:mysql /var/log/mysql
-# mkdir -p /var/log/mysql
-# systemctl restart mysqld
-#
-# TODO: enable persistent mysql logging
-# edit /etc/my.cnf
-# [mysqld]
-# general_log = on
-# general_log_file=/var/log/mysql/mysql_general.log
+# TODO: continue securing mysql
 
 echo "checking /etc/passwd"
 chown root /etc/passwd
