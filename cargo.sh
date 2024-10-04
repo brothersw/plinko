@@ -192,6 +192,7 @@ echo "installing whowatch"
 dnf install whowatch -y -q
 
 echo "installing pspy"
+dnf install wget -y
 wget -nv https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy64
 chown $MAIN_USER pspy64
 chmod +x pspy64
