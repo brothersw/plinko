@@ -184,12 +184,6 @@ service snort start
 echo "finding high-privleged files in background"
 find / -perm -04000 > programsWithRootAccess.txt &
 
-echo "installing + running rootkit and hardness detection, these WILL generate false positives!!!"
-apt -qq -y install rkhunter
-rkhunter -c --rwo --sk | tee rkhunt.out
-apt -qq -y install chkrootkit
-chkrootkit -q | tee chkroot.out
-
 echo "updating system stuff"
 apt -qq -y upgrade
 
@@ -200,3 +194,13 @@ echo "installing pspy"
 wget -nv https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy64
 chown $MAIN_USER pspy64
 chmod +x pspy64
+
+echo "installing + running rootkit and hardness detection, these WILL generate false positives!!!"
+apt -qq -y install rkhunter
+rkhunter -c --rwo --sk | tee rkhunt.out
+apt -qq -y install chkrootkit
+chkrootkit -q | tee chkroot.out
+
+# TODO: test me
+echo "verifying packages"
+dpkg --verify | tee dpgVerify.txt

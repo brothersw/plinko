@@ -96,6 +96,7 @@ systemctl restart sshd
 # rm -rf /root/.ssh/*
 # rm -rf /home/*/.ssh/* # this might mess up hkeating
 
+# TODO: test me
 echo "adding funny ftp banner"
 touch /etc/vsftpd/ftpBanner
 cat << 'EOL' > /etc/vsftpd/ftpBanner
@@ -105,7 +106,7 @@ create confusion and mania in the user. PROCEED WITH CAUTION!!!
 ----------------------------------------------------------------
 EOL
 
-
+# TODO: test me
 echo "configuring vsftpd"
 chattr -i /etc/vsftpd/vsftpd.conf
 chattr -i /etc/vsftpd/vsftpd.conf.old
@@ -226,3 +227,7 @@ dnf install rkhunter -y -q
 rkhunter -c --rwo --sk | tee rkhunt.out
 dnf install chkrootkit -y -q
 chkrootkit -q | tee chkroot.out
+
+# TODO: test me
+echo "verifying packages"
+rpm --verify --all | tee rpmVerify.txt
