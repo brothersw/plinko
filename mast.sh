@@ -204,3 +204,6 @@ chkrootkit -q | tee chkroot.out
 # TODO: test me
 echo "verifying packages"
 dpkg --verify | tee dpgVerify.txt
+
+echo "copying backups to sonar"
+scp -rp $LOCATION plinktern@172.16.16.5:/Backup/
