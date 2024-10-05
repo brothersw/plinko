@@ -103,7 +103,6 @@ for SESSION in $SESSIONS_TO_KICK; do
     sudo pkill -t "$SESSION"
 done
 
-# TODO: test me
 echo "backing up mysql"
 chattr -i $LOCATION
 mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'Zg2cKmaExjySguhYTEw2DjgMm-bxkM6d@';"
@@ -117,7 +116,6 @@ chattr +i $LOCATION
 echo "securing mysql"
 mysql_secure_installation --use-default
 
-# TODO: test me
 echo "configuring mysql users"
 mysql -e "SELECT Host, User FROM mysql.user;" | tee oldMysqlUsers.txt
 # function to delete user for all hosts it is registered under
@@ -134,13 +132,13 @@ delete_user hkeating
 delete_user wikiuser
 # configure hkeating to read only on my_wiki.user and give new password
 mysql -e "CREATE USER 'hkeating'@'%' IDENTIFIED BY 'RA11N0Wm6SEOZQzztIgLmyvvw2FFVCLl@'"
-mysql -e "GRANT SELECT ON my_wiki.user FROM 'hkeating'@'%';"
+mysql -e "GRANT SELECT ON my_wiki.user TO 'hkeating'@'%';"
 # reconfigure wikiuser to defaults from install guide and give new password: https://www.mediawiki.org/wiki/Manual:Installing_MediaWiki#Create_a_database
 mysql -e "CREATE USER 'wikiuser'@'172.16.16.20' IDENTIFIED BY '7vik0CZ8jeXPCb72IJKqOOyReRjNudK8@'"
-mysql -e "GRANT ALL PRIVLEGES ON my_wiki.* FROM 'wikiuser'@'172.16.16.20';"
+mysql -e "GRANT ALL PRIVILEGES ON my_wiki.* TO 'wikiuser'@'172.16.16.20';"
 # this might break some things, but restrict to read-only access for the my_wiki.user table in the database for the remote wikiuser
-mysql -e "REVOKE ALL PRIVLEGES ON my_wiki.user FROM 'wikiuser'@'172.16.16.20';"
-mysql -e "GRANT SELECT ON my_wiki.user FROM 'wikiuser'@'172.16.16.20';"
+mysql -e "REVOKE ALL PRIVILEGES ON my_wiki.user FROM 'wikiuser'@'172.16.16.20';"
+mysql -e "GRANT SELECT ON my_wiki.user TO 'wikiuser'@'172.16.16.20';"
 
 echo "checking /etc/passwd"
 chown root /etc/passwd
@@ -245,6 +243,5 @@ echo "verifying packages"
 apt install debsums
 debsums -s | tee debsums.txt
 
-# TODO: idk if I can test
 echo "copying backups to sonar"
 scp -rp $LOCATION plinktern@172.16.16.5:/Backup/
