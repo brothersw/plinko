@@ -96,7 +96,6 @@ systemctl restart sshd
 # rm -rf /root/.ssh/*
 # rm -rf /home/*/.ssh/* # this might mess up hkeating
 
-# TODO: test me
 echo "adding funny ftp banner"
 touch /etc/vsftpd/ftpBanner
 cat << 'EOL' > /etc/vsftpd/ftpBanner
@@ -106,7 +105,6 @@ create confusion and mania in the user. PROCEED WITH CAUTION!!!
 ----------------------------------------------------------------
 EOL
 
-# TODO: test me
 echo "configuring vsftpd"
 chattr -i /etc/vsftpd/vsftpd.conf
 chattr -i /etc/vsftpd/vsftpd.conf.old
@@ -120,9 +118,10 @@ data_connection_timeout=120
 idle_session_timeout=150
 max_clients=3
 chown_username=plinktern
-#cmds_allowed
+cmds_allowed=RETR,PWD,HELP
 nopriv_user=games
 banner_file=/etc/vsftpd/ftpBanner
+xferlog_enable=YES
 EOL
 chattr +i /etc/vsftpd/vsftpd.conf
 chattr +i /etc/vsftpd/vsftpd.conf.old
@@ -158,6 +157,7 @@ ufw deny 4444 # default metasploit port
 ufw deny 6200
 ufw --force enable
 
+# TODO: Test fail2ban
 echo "installing fail2ban"
 dnf install fail2ban -y
 touch /etc/fail2ban/jail.local
@@ -188,6 +188,7 @@ update-rc.d fail2ban enable
 systemctl restart fail2ban
 fail2ban-client status
 
+# TODO: Test
 echo "installing & enabling snort"
 dnf install snort -y -q
 touch /etc/systemd/system/snort.service
@@ -228,7 +229,7 @@ rkhunter -c --rwo --sk | tee rkhunt.out
 dnf install chkrootkit -y -q
 chkrootkit -q | tee chkroot.out
 
-# TODO: test me
+# TODO: Test
 echo "verifying packages"
 rpm --verify --all | tee rpmVerify.txt
 
