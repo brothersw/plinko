@@ -18,7 +18,7 @@ transfer_script() {
 echo "Waiting for the server to become available..."
 until transfer_script; do
     echo "Server not available, retrying..."
-    sleep 1
+    sleep 0.2
 done
 
 echo "Server is available. Script transferred successfully."
