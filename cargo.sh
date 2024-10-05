@@ -96,6 +96,15 @@ systemctl restart sshd
 # rm -rf /root/.ssh/*
 # rm -rf /home/*/.ssh/* # this might mess up hkeating
 
+echo "Dissconnecting other ssh users"
+CUR_SESSION=$(tty | sed 's|/dev/||')
+SESSIONS_TO_KICK=$(who | awk -v current="$CUR_SESSION" '$2 ~ /pts/ && $2 != current {print $2}')
+# Loop through the list of users and disconnect their sessions
+for SESSION in $SESSIONS_TO_KICK; do
+    echo "Disconnecting session: $SESSION"
+    sudo pkill -t "$SESSION"
+done
+
 echo "adding funny ftp banner"
 touch /etc/vsftpd/ftpBanner
 cat << 'EOL' > /etc/vsftpd/ftpBanner
