@@ -96,7 +96,36 @@ systemctl restart sshd
 # rm -rf /root/.ssh/*
 # rm -rf /home/*/.ssh/* # this might mess up hkeating
 
-# TODO: configure ftp
+echo "adding funny ftp banner"
+touch /etc/vsftpd/ftpBanner
+cat << 'EOL' > /etc/vsftpd/ftpBanner
+---------------------------------------------------------------- 
+WARNING: This FTP server contains DANGEROUS information that may
+create confusion and mania in the user. PROCEED WITH CAUTION!!!
+----------------------------------------------------------------
+EOL
+
+
+echo "configuring vsftpd"
+chattr -i /etc/vsftpd/vsftpd.conf
+chattr -i /etc/vsftpd/vsftpd.conf.old
+mv /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.old
+touch /etc/vsftpd/vsftpd.conf
+cat << EOL > /etc/vsftpd/vsftpd.conf
+chown_uploads
+chroot_local_user
+anon_umask=044
+data_connection_timeout=120
+idle_session_timeout=150
+max_clients=3
+chown_username=plinktern
+#cmds_allowed
+nopriv_user=games
+banner_file=/etc/vsftpd/ftpBanner
+EOL
+chattr +i /etc/vsftpd/vsftpd.conf
+chattr +i /etc/vsftpd/vsftpd.conf.old
+systemctl restart vsftpd
 
 echo "checking /etc/passwd"
 chown root /etc/passwd
@@ -125,6 +154,7 @@ ufw default allow outgoing
 ufw allow ssh
 ufw allow ftp
 ufw deny 4444 # default metasploit port
+ufw deny 6200
 ufw --force enable
 
 echo "installing fail2ban"
@@ -179,12 +209,6 @@ service snort start
 echo "finding high-privleged files in background"
 find / -perm -04000 > programsWithRootAccess.txt &
 
-echo "installing + running rootkit and hardness detection, these WILL generate false positives!!!"
-dnf install rkhunter -y -q
-rkhunter -c --rwo --sk | tee rkhunt.out
-dnf install chkrootkit -y -q
-chkrootkit -q | tee chkroot.out
-
 echo "updating system stuff"
 dnf upgrade --refresh
 
@@ -196,3 +220,9 @@ dnf install wget -y
 wget -nv https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy64
 chown $MAIN_USER pspy64
 chmod +x pspy64
+
+echo "installing + running rootkit and hardness detection, these WILL generate false positives!!!"
+dnf install rkhunter -y -q
+rkhunter -c --rwo --sk | tee rkhunt.out
+dnf install chkrootkit -y -q
+chkrootkit -q | tee chkroot.out
