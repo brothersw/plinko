@@ -134,8 +134,8 @@ mysql -e "GRANT SELECT ON my_wiki.user TO 'hkeating'@'%';"
 mysql -e "CREATE USER 'wikiuser'@'172.16.16.20' IDENTIFIED BY '7vik0CZ8jeXPCb72IJKqOOyReRjNudK8@'"
 mysql -e "GRANT ALL PRIVILEGES ON my_wiki.* TO 'wikiuser'@'172.16.16.20';"
 # this might break some things, but restrict to read-only access for the my_wiki.user table in the database for the remote wikiuser
-mysql -e "REVOKE ALL PRIVILEGES ON my_wiki.user FROM 'wikiuser'@'172.16.16.20';"
-mysql -e "GRANT SELECT ON my_wiki.user TO 'wikiuser'@'172.16.16.20';"
+# mysql -e "REVOKE ALL PRIVILEGES ON my_wiki.user FROM 'wikiuser'@'172.16.16.20';"
+# mysql -e "GRANT SELECT ON my_wiki.user TO 'wikiuser'@'172.16.16.20';"
 mysql -e "FLUSH PRIVILEGES;"
 
 echo "checking /etc/passwd"
