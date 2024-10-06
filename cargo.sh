@@ -165,7 +165,6 @@ ufw deny 4444 # default metasploit port
 ufw deny 6200
 ufw --force enable
 
-# TODO: Test fail2ban
 echo "installing fail2ban"
 dnf install fail2ban -y
 touch /etc/fail2ban/jail.local
@@ -196,7 +195,6 @@ update-rc.d fail2ban enable
 systemctl restart fail2ban
 fail2ban-client status
 
-# TODO: Test
 echo "installing & enabling snort"
 dnf install snort -y -q
 touch /etc/systemd/system/snort.service
@@ -237,7 +235,6 @@ rkhunter -c --rwo --sk | tee rkhunt.out
 dnf install chkrootkit -y -q
 chkrootkit -q | tee chkroot.out
 
-# TODO: Test
 echo "verifying packages"
 rpm --verify --all | tee rpmVerify.txt
 
