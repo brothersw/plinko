@@ -238,7 +238,7 @@ apt -qq -y install chkrootkit
 chkrootkit -q | tee chkroot.out
 
 echo "verifying packages"
-apt install debsums
+apt -qq -y install debsums
 debsums -s | tee debsums.txt
 
 echo "copying backups to sonar"
