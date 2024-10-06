@@ -242,4 +242,4 @@ echo "verifying packages"
 rpm --verify --all | tee rpmVerify.txt
 
 echo "copying backups to sonar"
-scp -rp $LOCATION plinktern@172.16.16.5:/Backup/
+scp -rp $LOCATION plinktern@172.16.16.5:/cargoBackup
