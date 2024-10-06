@@ -92,20 +92,17 @@ EOL
 chattr +i /etc/ssh/sshd_config
 chattr +i /etc/ssh/sshd_config.old
 systemctl restart sshd
-# I don't need this as PubkeyAuthentication is no
-# rm -rf /root/.ssh/*
-# rm -rf /home/*/.ssh/* # this might mess up hkeating
 
-
-echo "Dissconnecting other ssh users"
-CUR_SESSION=$(tty | sed 's|/dev/||')
-echo "Current session is $CUR_SESSION"
-SESSIONS_TO_KICK=$(who -u | awk -v current="$CUR_SESSION" '$2 ~ /pts/ && $2 != current {print $6}')
-# Loop through the list of users and disconnect their sessions
-for SESSION in $SESSIONS_TO_KICK; do
-    echo "Disconnecting session: $SESSION"
-    kill -9 "$SESSION"
-done
+# buggy to kill the pid of the tty and pkill -t doens't work
+# echo "Dissconnecting other ssh users"
+# CUR_SESSION=$(tty | sed 's|/dev/||')
+# echo "Current session is $CUR_SESSION"
+# SESSIONS_TO_KICK=$(who -u | awk -v current="$CUR_SESSION" '$2 ~ /pts/ && $2 != current {print $6}')
+# # Loop through the list of users and disconnect their sessions
+# for SESSION in $SESSIONS_TO_KICK; do
+#     echo "Disconnecting session: $SESSION"
+#     kill -9 "$SESSION"
+# done
 
 echo "adding funny ftp banner"
 touch /etc/vsftpd/ftpBanner

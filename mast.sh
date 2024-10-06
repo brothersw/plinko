@@ -89,9 +89,6 @@ EOL
 chattr +i /etc/ssh/sshd_config
 chattr +i /etc/ssh/sshd_config.old
 systemctl restart sshd
-# I don't need this as PubkeyAuthentication is no
-# rm -rf /root/.ssh/*
-# rm -rf /home/*/.ssh/* # this might mess up hkeating
 
 # Disconnect other ssh users
 echo "Dissconnecting other ssh users"
