@@ -128,14 +128,11 @@ delete_user() {
 delete_user hkeating
 delete_user wikiuser
 # configure hkeating to read only on my_wiki.user and give new password
-mysql -e "CREATE USER 'hkeating'@'%' IDENTIFIED BY 'RA11N0Wm6SEOZQzztIgLmyvvw2FFVCLl@'"
+mysql -e "CREATE USER 'hkeating'@'%' IDENTIFIED BY 'RA11N0Wm6SEOZQzztIgLmyvvw2FFVCLl@';"
 mysql -e "GRANT SELECT ON my_wiki.user TO 'hkeating'@'%';"
 # reconfigure wikiuser to defaults from install guide and give new password: https://www.mediawiki.org/wiki/Manual:Installing_MediaWiki#Create_a_database
-mysql -e "CREATE USER 'wikiuser'@'172.16.16.20' IDENTIFIED BY '7vik0CZ8jeXPCb72IJKqOOyReRjNudK8@'"
+mysql -e "CREATE USER 'wikiuser'@'172.16.16.20' IDENTIFIED BY '7vik0CZ8jeXPCb72IJKqOOyReRjNudK8@';"
 mysql -e "GRANT ALL PRIVILEGES ON my_wiki.* TO 'wikiuser'@'172.16.16.20';"
-# this might break some things, but restrict to read-only access for the my_wiki.user table in the database for the remote wikiuser
-# mysql -e "REVOKE ALL PRIVILEGES ON my_wiki.user FROM 'wikiuser'@'172.16.16.20';"
-# mysql -e "GRANT SELECT ON my_wiki.user TO 'wikiuser'@'172.16.16.20';"
 mysql -e "FLUSH PRIVILEGES;"
 
 echo "checking /etc/passwd"
@@ -147,12 +144,6 @@ pwck | tee passwordfileCheck.txt
 # echo "locking down chron jobs"
 # service cron stop
 # systemctl stop cron
-# chattr -i /etc/crontab
-# echo "" > /etc/crontab
-# chattr +i /etc/crontab
-# chattr -i /etc/anacrontab
-# echo "" > /etc/anacrontab
-# chattr +i /etc/anacrontab
 
 echo "updating system package lists"
 apt -qq -y update
@@ -241,5 +232,5 @@ echo "verifying packages"
 apt -qq -y install debsums
 debsums -s | tee debsums.txt
 
-echo "copying backups to sonar"
-scp -rp $LOCATION plinktern@172.16.16.5:/mastBackup
+echo "copying backups to sonar, you will need to enter the password for plinktern on sonar"
+scp -rp $LOCATION plinktern@172.16.16.5:/home/plinktern/mastBackup
